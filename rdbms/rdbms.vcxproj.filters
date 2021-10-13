@@ -18,5 +18,13 @@
     <ClCompile Include="rdbms.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="InputBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="InputBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
