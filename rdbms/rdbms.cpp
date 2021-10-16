@@ -3,7 +3,10 @@
 
 #include <iostream>
 #include <string>
+#include <exception>
+
 #include "InputBuffer.h"
+#include "Command.h"
 
 int main(int argc, char* argv[])
 {
@@ -12,12 +15,28 @@ int main(int argc, char* argv[])
 		newBuffer->print_prompt();
 		newBuffer->read_input();
 
-		if (newBuffer->getBuffer().compare(".exit") == 0) {
-			newBuffer->close_input_buffer(newBuffer);
-			exit(EXIT_SUCCESS);
+		Command* newCommand = new Command();
+
+		if (newBuffer->getBuffer().at(0) == '.') {
+			try {
+				newCommand->do_meta_command(newBuffer);
+				continue;
+			}
+			catch (std::exception& e) {
+				std::cout << e.what() << newBuffer->getBuffer() << std::endl;
+				continue;
+			}
 		}
-		else {
-			std::cout << "Unrecognized command " << newBuffer->getBuffer() << std::endl;
+
+		try {
+			newCommand->prepare_statement(newBuffer, newCommand);
 		}
+		catch (std::exception& e) {
+			std::cout << e.what() << newBuffer->getBuffer() << std::endl;
+			continue;
+		}
+
+		newCommand->execute_statement(newCommand);
+		std::cout << "Executed." << std::endl;
 	}
 }
